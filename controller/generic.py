@@ -40,7 +40,7 @@ def create_crud_router(
     _hooks = hooks or Hooks()  # instancia vazia (métodos no-op)
 
     @router.post("/", response_model=read_schema, status_code=201)
-    def create_item(payload: create_schema, session: Session = Depends(get_session)):
+    def create_item(payload: create_schema, session: Session = Depends(get_session)): # type: ignore
         if hasattr(_hooks, "pre_create") and callable(_hooks.pre_create):
             _hooks.pre_create(payload, session)
         return service.create(session, payload)
@@ -61,7 +61,7 @@ def create_crud_router(
         return obj
 
     @router.patch("/{item_id}", response_model=read_schema)
-    def update_item(item_id: int, payload: update_schema, session: Session = Depends(get_session)):
+    def update_item(item_id: int, payload: update_schema, session: Session = Depends(get_session)): # type: ignore
         obj = service.get(session, item_id)
         if not obj:
             raise HTTPException(404, "Not found")
