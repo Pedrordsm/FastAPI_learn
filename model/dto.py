@@ -1,17 +1,42 @@
-from model.models import Endereco, PessoaBase
+from model.models import EnderecoBase, PessoaBase
 from typing import List,Optional
 from sqlmodel import Field
 
-###NAO SEI FAZER
 class PessoaCreate(PessoaBase):
     pass 
 
+class PessoaPublic(PessoaBase):
+    id: int
+    model_config = {"from_attributes": True}
+
+class PessoaWithEndereco(PessoaPublic):
+    model_config = {"from_attributes": True}
+    enderecos: List["EnderecoPublic"] = []
+
 class PessoaUpdate(PessoaBase):
-    pass 
+    nome: Optional[str] = Field(default=None, min_length=2, max_length=120)
+    email: Optional[str] = Field(max_length=120, default=None)
 
-class EnderecoUpdate(Endereco):
-    pass
+class PessoaRead(PessoaBase):
+    id : int
 
-class EnderecoCreate(Endereco):
-    pass 
+class EnderecoPublic(EnderecoBase):
+    id : int
+    id_pessoa: Optional[int] = None
+    model_config = {"from_attributes": True}
+
+class EnderecoUpdate(EnderecoBase):
+    logradouro: Optional[str] = Field(default=None,max_length=120)
+    numero: Optional[int] = Field(default=None)
+    estado: Optional[str] = Field(default=None,max_length=2, min_length=2)
+    cidade: Optional[str] = Field(default=None,max_length=120)
+    bairro: Optional[str] = Field(default=None,max_length=120)
+    id_pessoa : Optional[int] = None
+
+class EnderecoCreate(EnderecoBase):
+    id_pessoa: Optional[int] = None # mesma ideia de criar vinculado do hero
+
+class EnderecoRead(EnderecoBase):
+    id : int
+    id_pessoa : Optional[int] = None
     
