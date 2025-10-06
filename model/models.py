@@ -1,5 +1,5 @@
-from sqlmodel import Field, SQLModel
-from typing import Optional
+from sqlmodel import Field, SQLModel, Relationship
+from typing import Optional, List
 
 class PessoaBase(SQLModel):
     nome: str = Field(min_length=2, max_length=120)
@@ -8,6 +8,7 @@ class PessoaBase(SQLModel):
 
 class Pessoa(PessoaBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, index=True)
+    enderecos: List["Endereco"] = Relationship(back_populates="pessoa")
     
 class EnderecoBase(SQLModel):
     logradouro: Optional[str] = Field(max_length=120)
@@ -18,3 +19,5 @@ class EnderecoBase(SQLModel):
 
 class Endereco(EnderecoBase, table= True):
     id: Optional[int] = Field(default=None, primary_key=True, index=True)
+    id_pessoa: Optional[int] = Field(default=None, foreign_key="pessoa.id")
+    pessoa: Optional[Pessoa] = Relationship(back_populates="enderecos")

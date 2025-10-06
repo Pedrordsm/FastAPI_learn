@@ -31,12 +31,12 @@ class EnderecoUpdate(EnderecoBase):
     estado: Optional[str] = Field(default=None,max_length=2, min_length=2)
     cidade: Optional[str] = Field(default=None,max_length=120)
     bairro: Optional[str] = Field(default=None,max_length=120)
-    id_pessoa : Optional[int] = None
+    id_pessoa : int
 
 class EnderecoCreate(EnderecoBase):
-    id_pessoa: Optional[int] = None # mesma ideia de criar vinculado do hero
+    id_pessoa: int
 
 class EnderecoRead(EnderecoBase):
     id : int
-    id_pessoa : Optional[int] = None
+    id_pessoa : int
     
